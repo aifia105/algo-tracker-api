@@ -2,10 +2,16 @@ import express from 'express';
 import { login, register } from '../services/auth.service';
 import { AppError } from '../exceptions/exceptions';
 import { checkTokenStatus } from '../services/jwtService.service';
+import { validateBody } from '../middlewares/validation.middleware';
+import {
+  loginSchema,
+  registerSchema,
+  forgotPasswordSchema,
+} from '../validations/auth.validation';
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
+router.post('/register', validateBody(registerSchema), async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const result = await register({ username, email, password });
@@ -19,7 +25,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', validateBody(loginSchema), async (req, res) => {
   try {
     const { email, password } = req.body;
     const result = await login({ email, password });
@@ -80,22 +86,22 @@ router.get('/validate-token', async (req, res) => {
   }
 });
 
-router.post('/forgot-password', async (req, res) => {
-  try {
-    const { email } = req.body;
+router.post(
+  '/forgot-password',
+  validateBody(forgotPasswordSchema),
+  async (req, res) => {
+    try {
+      const { email } = req.body;
 
-    if (!email) {
-      res.status(400).json({ message: 'Email is required' });
-      return;
+      res.status(200).json({ message: `Password reset link sent to ${email}` });
+    } catch (error) {
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: 'Failed to send password reset link' });
+      }
     }
-    res.status(200).json({ message: `Password reset link sent to ${email}` });
-  } catch (error) {
-    if (error instanceof AppError) {
-      res.status(error.statusCode).json({ message: error.message });
-    } else {
-      res.status(500).json({ message: 'Failed to send password reset link' });
-    }
-  }
-});
+  },
+);
 
 export default router;

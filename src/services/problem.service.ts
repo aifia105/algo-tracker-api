@@ -2,9 +2,13 @@ import e from 'express';
 import { ProblemEntryDto } from '../dtos/ProblemEntry.dto';
 import { NotFoundError } from '../exceptions/exceptions';
 import ProblemEntryModel from '../models/ProblemEntry';
+import {
+  ProblemEntryInput,
+  UpdateProblemEntryInput,
+} from '../validations/problem.validation';
 
 export const addProblem = async (
-  problemData: ProblemEntryDto,
+  problemData: ProblemEntryInput,
 ): Promise<ProblemEntryDto> => {
   try {
     const newProblem = new ProblemEntryModel(problemData);
@@ -43,7 +47,7 @@ export const getAllProblems = async (): Promise<ProblemEntryDto[]> => {
 
 export const updateProblem = async (
   problemId: string,
-  updateData: Partial<ProblemEntryDto>,
+  updateData: UpdateProblemEntryInput,
 ): Promise<ProblemEntryDto | null> => {
   try {
     const updatedProblem = await ProblemEntryModel.findByIdAndUpdate(

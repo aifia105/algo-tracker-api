@@ -9,9 +9,10 @@ import {
   NotFoundError,
   ConflictError,
 } from '../exceptions/exceptions';
+import { LoginInput, RegisterInput } from '../validations/auth.validation';
 
 export const login = async (
-  loginDto: LoginDto,
+  loginDto: LoginInput,
 ): Promise<{
   user: {
     id: string;
@@ -64,7 +65,7 @@ export const login = async (
 };
 
 export const register = async (
-  registerDto: RegisterDto,
+  registerDto: RegisterInput,
 ): Promise<{
   user: {
     id: string;
