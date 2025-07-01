@@ -12,7 +12,7 @@ export class ProblemEntryDto {
   attempts!: number;
   tags!: string[];
   status!: Status;
-  TimeTaken!: number;
+  timeTaken!: number;
   cognitiveLoad!: number;
   dateSolved!: Date;
   notes?: string;

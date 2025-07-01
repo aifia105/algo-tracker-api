@@ -26,7 +26,11 @@ router.post('/add', validateBody(problemEntrySchema), async (req, res) => {
     res.status(201).json(newProblem);
   } catch (error) {
     console.error('Error adding problem:', error);
-    res.status(500).json({ message: 'Failed to add problem' });
+    if (error instanceof AppError) {
+      res.status(error.statusCode).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'Failed to add problem' });
+    }
   }
 });
 

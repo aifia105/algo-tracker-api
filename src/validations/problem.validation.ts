@@ -40,7 +40,7 @@ export const problemEntrySchema = z.object({
   status: z.nativeEnum(Status, {
     errorMap: () => ({ message: 'Invalid status' }),
   }),
-  TimeTaken: z
+  timeTaken: z
     .number()
     .min(0, 'Time taken cannot be negative')
     .max(86400, 'Time taken cannot exceed 24 hours (86400 seconds)'),

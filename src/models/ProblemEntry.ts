@@ -13,7 +13,7 @@ export interface ProblemEntry extends Document {
   attempts: number;
   tags: string[];
   status: Status;
-  TimeTaken: number;
+  timeTaken: number;
   cognitiveLoad: number;
   dateSolved: Date;
   notes: string;
@@ -26,9 +26,9 @@ const ProblemEntrySchema: Schema = new Schema(
       ref: 'User',
       required: true,
     },
-    problemId: { type: String, required: true },
-    problemTitle: { type: String, required: true },
-    problemUrl: { type: String, required: true },
+    problemId: { type: String, required: true, unique: true },
+    problemTitle: { type: String, required: true, unique: true },
+    problemUrl: { type: String, required: true, unique: true },
     difficulty: {
       type: String,
       enum: Object.values(Difficulty),
@@ -38,7 +38,7 @@ const ProblemEntrySchema: Schema = new Schema(
     tags: { type: [String], default: [], require: true },
     attempts: { type: Number, default: 0 },
     status: { type: String, enum: Object.values(Status), required: true },
-    TimeTaken: { type: Number, default: 0, required: true },
+    timeTaken: { type: Number, default: 0, required: true },
     cognitiveLoad: { type: Number, default: 3 },
     dateSolved: { type: Date, default: Date.now, require: true },
     notes: { type: String, default: '' },
