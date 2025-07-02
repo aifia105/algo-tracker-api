@@ -4,6 +4,7 @@ import {
   addProblem,
   deleteProblem,
   getAllProblems,
+  getAllProblemTags,
   getProblemById,
   updateProblem,
 } from '../services/problem.service';
@@ -43,6 +44,20 @@ router.get('/all', async (req, res) => {
       res.status(error.statusCode).json({ message: error.message });
     } else {
       res.status(500).json({ message: 'Failed to get all problems' });
+    }
+  }
+});
+
+router.get('/tags', async (req, res) => {
+  try {
+    const tags = await getAllProblemTags();
+    res.status(200).json(tags);
+  } catch (error) {
+    console.error('Error getting problem tags:', error);
+    if (error instanceof AppError) {
+      res.status(error.statusCode).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'Failed to get problem tags' });
     }
   }
 });

@@ -77,3 +77,17 @@ export const deleteProblem = async (problemId: string): Promise<boolean> => {
     throw new Error('Failed to delete problem');
   }
 };
+
+export const getAllProblemTags = async (): Promise<string[]> => {
+  try {
+    const problems = await ProblemEntryModel.find();
+    const tagsSet = new Set<string>();
+    problems.forEach((problem) => {
+      problem.tags.forEach((tag) => tagsSet.add(tag));
+    });
+    return Array.from(tagsSet);
+  } catch (error) {
+    console.error('Error getting all tags:', error);
+    throw new Error('Failed to get all tags');
+  }
+};
